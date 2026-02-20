@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Smart SOS - Safe Walk</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <h1>Smart SOS</h1>
+    <p>Your safety, one tap away</p>
+
+    <!-- STEP 1: SOS Button -->
+    <div class="sos-container">
+        <button id="sosBtn">SOS</button>
+        <div id="preview"></div>
+    </div>
+
+    <!-- STEP 2: Trusted Contacts -->
+    <div class="contacts">
+        <h2>Trusted Contacts</h2>
+        <input type="text" id="name" placeholder="Name">
+        <input type="text" id="number" placeholder="Phone (+CountryCode)">
+        <button id="addContact">Add</button>
+        <ul id="contactList"></ul>
+    </div>
+
+    <!-- STEP 3: Safe Walk -->
+    <div class="safeWalk">
+        <h2>Safe Walk Mode</h2>
+        <input type="number" id="minutes" placeholder="Duration (minutes)">
+        <button id="startWalk">Start Walk</button>
+        <button id="safeBtn" style="display:none;">Reached Safely</button>
+        <div id="timer"></div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
