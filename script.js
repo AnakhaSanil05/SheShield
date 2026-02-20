@@ -1,15 +1,13 @@
-// ==========================
-// STEP 2: Trusted Contacts
-// ==========================
+// Trusted Contacts
 let contacts = JSON.parse(localStorage.getItem("contacts")) || [];
 
 function renderContacts() {
     const list = document.getElementById("contactList");
     list.innerHTML = "";
+
     contacts.forEach((c, index) => {
         const li = document.createElement("li");
-        li.innerHTML = `${c.name} - ${c.number} 
-        <button onclick="deleteContact(${index})">Delete</button>`;
+        li.innerHTML = `${c.name} - ${c.number} <button onclick="deleteContact(${index})">Delete</button>`;
         list.appendChild(li);
     });
 }
@@ -21,29 +19,32 @@ function deleteContact(index) {
 }
 
 document.getElementById("addContact").addEventListener("click", () => {
-    const name = document.getElementById("name").value;
-    const number = document.getElementById("number").value;
+    const name = document.getElementById("name").value.trim();
+    const number = document.getElementById("number").value.trim();
 
-    if(name && number){
-        contacts.push({name, number});
+    if (name && number) {
+        const cleanNumber = number.replace(/\D/g, "");
+        contacts.push({ name, number: cleanNumber });
         localStorage.setItem("contacts", JSON.stringify(contacts));
         renderContacts();
         document.getElementById("name").value = "";
         document.getElementById("number").value = "";
     } else {
-        alert("Enter name and number (+CountryCode)");
+        alert("Enter name and phone number");
     }
 });
 
 renderContacts();
 
-
-// ==========================
-// STEP 1: SOS via WhatsApp
-// ==========================
+// SOS via WhatsApp
 document.getElementById("sosBtn").addEventListener("click", () => {
-    if(contacts.length === 0){
+    if (contacts.length === 0) {
         alert("Add at least one trusted contact!");
+        return;
+    }
+
+    if (!navigator.geolocation) {
+        alert("Geolocation not supported");
         return;
     }
 
@@ -55,60 +56,48 @@ document.getElementById("sosBtn").addEventListener("click", () => {
 
         const message = `🚨 EMERGENCY ALERT 🚨
 I need help immediately!
-My Location: ${mapsLink}
+My live location: ${mapsLink}
 Time: ${new Date().toLocaleString()}
 Please respond ASAP.`;
 
-        // Desktop preview
-        document.getElementById("preview").innerHTML =
-        `<textarea>${message}</textarea>`;
+        document.getElementById("preview").innerHTML = `<textarea>${message}</textarea>`;
 
-        // Open WhatsApp for first contact
-        const first = contacts[0];
-        const waLink = `https://wa.me/${first.number}?text=${encodeURIComponent(message)}`;
-        window.open(waLink, "_blank");
-
-        alert("SOS Triggered!");
+        const cleanNumber = contacts[0].number;
+        const waLink = `https://api.whatsapp.com/send?phone=${cleanNumber}&text=${encodeURIComponent(message)}`;
+        window.location.href = waLink;
 
     }, () => {
         alert("Please allow location access.");
     });
 });
 
-
-// ==========================
-// STEP 3 & 4: Safe Walk Mode
-// ==========================
+// Safe Walk
 let interval;
 let timeLeft;
 
 document.getElementById("startWalk").addEventListener("click", () => {
-
     const mins = parseInt(document.getElementById("minutes").value);
 
-    if(!mins){
-        alert("Enter walk duration");
+    if (!mins || mins <= 0) {
+        alert("Enter valid duration");
         return;
     }
 
     timeLeft = mins * 60;
-
     document.getElementById("startWalk").style.display = "none";
     document.getElementById("safeBtn").style.display = "inline";
 
     interval = setInterval(() => {
-
         const m = Math.floor(timeLeft / 60);
         const s = timeLeft % 60;
         document.getElementById("timer").innerText = `${m}m ${s}s remaining`;
 
-        if(timeLeft <= 0){
+        if (timeLeft <= 0) {
             clearInterval(interval);
-            autoSOS();
+            triggerAutoSOS();
         }
 
         timeLeft--;
-
     }, 1000);
 });
 
@@ -119,7 +108,7 @@ document.getElementById("safeBtn").addEventListener("click", () => {
     document.getElementById("safeBtn").style.display = "none";
 });
 
-function autoSOS(){
+function triggerAutoSOS() {
     alert("Safe Walk time expired! Triggering SOS...");
     document.getElementById("sosBtn").click();
 }

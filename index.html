@@ -1,38 +1,51 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Smart - Safe Walk</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart SOS & Safe Walk</title>
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
+    <header>
+        <h1>Smart SOS & Safe Walk</h1>
+        <p>One tap safety solution for women</p>
+    </header>
 
-    <h1>Smart SOS</h1>
-    <p>Your safety, one tap away</p>
+    <main>
+        <!-- SOS Section -->
+        <section class="sos-section">
+            <h2>🚨 Emergency SOS</h2>
+            <button id="sosBtn">SOS</button>
+            <div id="preview"></div>
+        </section>
 
-    <!-- STEP 1: SOS Button -->
-    <div class="sos-container">
-        <button id="sosBtn">SOS</button>
-        <div id="preview"></div>
-    </div>
+        <!-- Trusted Contacts Section -->
+        <section class="contacts-section">
+            <h2>Trusted Contacts</h2>
+            <div class="contact-form">
+                <input type="text" id="name" placeholder="Name">
+                <input type="text" id="number" placeholder="Phone (+CountryCode)">
+                <button id="addContact">Add Contact</button>
+            </div>
+            <ul id="contactList"></ul>
+        </section>
 
-    <!-- STEP 2: Trusted Contacts -->
-    <div class="contacts">
-        <h2>Trusted Contacts</h2>
-        <input type="text" id="name" placeholder="Name">
-        <input type="text" id="number" placeholder="Phone (+CountryCode)">
-        <button id="addContact">Add</button>
-        <ul id="contactList"></ul>
-    </div>
+        <!-- Safe Walk Section -->
+        <section class="safe-walk">
+            <h2>Safe Walk Mode</h2>
+            <input type="number" id="minutes" placeholder="Duration (minutes)">
+            <button id="startWalk">Start Walk</button>
+            <button id="safeBtn" style="display:none;">Reached Safely</button>
+            <div id="timer"></div>
+        </section>
+    </main>
 
-    <!-- STEP 3: Safe Walk -->
-    <div class="safeWalk">
-        <h2>Safe Walk Mode</h2>
-        <input type="number" id="minutes" placeholder="Duration (minutes)">
-        <button id="startWalk">Start Walk</button>
-        <button id="safeBtn" style="display:none;">Reached Safely</button>
-        <div id="timer"></div>
-    </div>
+    <footer>
+        <p>&copy; 2026 Smart SOS. All rights reserved.</p>
+    </footer>
 
-    <script src="script.js"></script>
+<script src="script.js"></script>
 </body>
 </html>
